@@ -1,3 +1,45 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const scanBtn = document.getElementById("scanBtn");
+    const colorContainer = document.getElementById("colorContainer");
+
+    scanButton.addEventListener("click", () => {
+       chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+        chrome.scripting.executeScript(
+            {
+                target: { tabId: tabs[0].id },
+                function: getColorsFromPage,
+            },
+            (result) => {
+                if (results && result[0].result) {
+                    displayColors(result[0].results);
+                }
+            }
+        );
+       }) 
+    })
+
+// display colors in the colorContainer
+function displayColors(colors) {
+colorContainer.HTML = ""; // clear existing colors
+colors.forEach((color) => {
+    const colorBox = document.createElement("div");
+    colorBox.className = "color-box";
+    colorBox.style.backgroundColor = color;
+    colorBox.textContent = color;
+    colorContainer.appendChild(colorBox);
+     })
+    }
+})
+
+function getColorsFromPage(){
+    const colors = new Set();
+    document.querySelectorAll("*").forEach((element) => {
+        const style = window.getComputedStyle(element);
+        const backgroundColor = style.getPropertyValue("backround-color");
+
+    })
+    return Array.from(colors);
+}
 
 // chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 //   console.log("colors.js running");

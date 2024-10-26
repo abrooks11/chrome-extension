@@ -13,9 +13,9 @@ chrome.action.onClicked.addListener((tab) => {
     () => {
       // After the content script runs, query for the colors
       chrome.tabs.sendMessage(tab.id, { action: "getColors" }, (response) => {
-        console.log(response);
-        if (response && response.colors) {
-        }
+        console.log("Colors from content.js:", response);
+        // if (response && response.colors) {
+        // }
       });
     }
   );
